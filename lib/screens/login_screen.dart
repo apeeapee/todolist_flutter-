@@ -14,59 +14,105 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Using a dark theme palette for a futuristic look
+    final Color primaryNeon = const Color(0xFF00F0FF); // Cyan Neon
+    final Color bgDark = const Color(0xFF1A1A2E);
+    final Color cardDark = const Color(0xFF16213E);
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F9),
+      backgroundColor: bgDark,
       body: Center(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "Welcome Back 👋",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              Icon(Icons.security, size: 80, color: primaryNeon),
+              const SizedBox(height: 20),
+              Text(
+                "ACCESS PORTAL",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white,
+                  letterSpacing: 2,
+                  shadows: [
+                    Shadow(
+                      color: primaryNeon.withOpacity(0.8),
+                      blurRadius: 20,
+                    )
+                  ],
+                ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                "Login untuk melanjutkan",
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+              Text(
+                "Identify yourself to proceed",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[400],
+                  letterSpacing: 1,
+                ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 50),
 
               // Email
               TextField(
                 controller: email,
+                style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  labelText: "Email",
+                  labelText: "USER ID / EMAIL",
+                  labelStyle: TextStyle(color: Colors.grey[500], fontSize: 12),
                   filled: true,
-                  fillColor: Colors.white,
-                  prefixIcon: const Icon(Icons.email),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide.none),
+                  fillColor: cardDark,
+                  prefixIcon: Icon(Icons.email_outlined, color: primaryNeon),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide(color: primaryNeon, width: 2),
+                  ),
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
 
               // Password
               TextField(
                 controller: password,
                 obscureText: true,
+                style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  labelText: "Password",
+                  labelText: "ACCESS CODE",
+                  labelStyle: TextStyle(color: Colors.grey[500], fontSize: 12),
                   filled: true,
-                  fillColor: Colors.white,
-                  prefixIcon: const Icon(Icons.lock),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
-                      borderSide: BorderSide.none),
+                  fillColor: cardDark,
+                  prefixIcon: Icon(Icons.lock_outline, color: primaryNeon),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide(color: primaryNeon, width: 2),
+                  ),
                 ),
               ),
-              const SizedBox(height: 25),
+              const SizedBox(height: 40),
 
               // Login Button
-              SizedBox(
+              Container(
                 width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: primaryNeon.withOpacity(0.4),
+                      blurRadius: 15,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
                 child: ElevatedButton(
                   onPressed: () async {
                     try {
@@ -74,27 +120,53 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushReplacement(
                           context, MaterialPageRoute(builder: (_) => HomeScreen()));
                     } catch (e) {
-                      print(e);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Access Denied: ${e.toString()}"),
+                          backgroundColor: Colors.red.withOpacity(0.8),
+                        ),
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF6C63FF),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    backgroundColor: primaryNeon,
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12)),
+                    elevation: 0,
                   ),
-                  child: const Text("Login",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  child: const Text("INITIATE LOGIN",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 1)),
                 ),
               ),
 
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
               TextButton(
                 onPressed: () {
                   Navigator.push(
                       context, MaterialPageRoute(builder: (_) => RegisterScreen()));
                 },
-                child: const Text("Belum punya akun? Daftar"),
+                child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                    children: [
+                      const TextSpan(text: "New User? "),
+                      TextSpan(
+                        text: "Create Identity",
+                        style: TextStyle(
+                          color: primaryNeon,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          decorationColor: primaryNeon,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               )
             ],
           ),
